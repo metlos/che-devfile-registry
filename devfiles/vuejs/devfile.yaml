@@ -1,0 +1,49 @@
+---
+apiVersion: 1.0.0
+metadata:
+  name: vuejs
+projects:
+  -
+    name: vuejs-app
+    source:
+      type: git
+      location: "https://github.com/gothinkster/vue-realworld-example-app.git"
+components:
+  -
+    type: chePlugin
+    id: che-incubator/typescript/latest
+    memoryLimit: 512Mi
+  -
+    type: dockerimage
+    alias: nodejs
+    image: registry.access.redhat.com/ubi8/nodejs-10
+    command: ['sleep']
+    args: ['infinity']
+    env:
+      - name: HOME
+        value: /tmp/user
+      - name: PS1
+        value: $(echo ${0})\\$
+    memoryLimit: 512Mi
+    endpoints:
+      - name: 'vuejs-app'
+        port: 8080
+        attributes:
+          discoverable: 'true'
+    mountSources: true
+commands:
+  -
+    name: run the web app
+    actions:
+      - type: exec
+        component: nodejs
+        command: npm install && npm run serve
+        workdir: ${CHE_PROJECTS_ROOT}/vuejs-app
+  -
+    name: enable app preview
+    actions:
+      - type: exec
+        component: nodejs
+        command: |
+          echo "module.exports = {devServer: {disableHostCheck: true}};" > vue.config.js
+        workdir: ${CHE_PROJECTS_ROOT}/vuejs-app

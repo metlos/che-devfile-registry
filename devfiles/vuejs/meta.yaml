@@ -1,0 +1,6 @@
+---
+displayName: Vue.js Web Application
+description: Default stack with NodeJS 10 and Vue.js sample app
+tags: ["NodeJS", "Vue.js", "RealWorld", "Theia", "ubi8"]
+icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
+globalMemoryLimit: 1686Mi
